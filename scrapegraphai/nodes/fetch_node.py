@@ -16,6 +16,7 @@ from ..utils.logging import get_logger
 from .base_node import BaseNode
 from ..models import OpenAI
 
+import pickle
 
 class FetchNode(BaseNode):
     """
@@ -53,7 +54,7 @@ class FetchNode(BaseNode):
             False if node_config is None else node_config.get("verbose", False)
         )
         self.use_soup = (
-            False if node_config is None else node_config.get("use_soup", False)
+            True if node_config is None else node_config.get("use_soup", True)
         )
         self.loader_kwargs = (
             {} if node_config is None else node_config.get("loader_kwargs", {})
@@ -174,7 +175,10 @@ class FetchNode(BaseNode):
 
         elif self.use_soup:
             self.logger.info(f"--- (Fetching HTML from: {source}) ---")
-            response = requests.get(source)
+            
+            with open('scraping/data/dom/response.pkl', 'rb') as f:
+                response = pickle.load(f)
+            # response = requests.get(source)
             if response.status_code == 200:
                 if not response.text.strip():
                     raise ValueError("No HTML body content found in the response.")
