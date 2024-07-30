@@ -66,9 +66,9 @@ class AbstractGraph(ABC):
         >>> result = my_graph.run()
     """
 
-    def __init__(self, prompt: str, config: dict, 
+    def __init__(self, cfg, prompt: str, config: dict, 
                  source: Optional[str] = None, schema: Optional[BaseModel] = None):
-
+        self.cfg = cfg
         self.prompt = prompt
         self.source = source
         self.config = config

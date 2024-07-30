@@ -48,8 +48,8 @@ class SmartScraperGraph(AbstractGraph):
         )
     """
 
-    def __init__(self, prompt: str, source: str, config: dict, schema: Optional[BaseModel] = None):
-        super().__init__(prompt, config, source, schema)
+    def __init__(self, cfg, prompt: str, source: str, config: dict, schema: Optional[BaseModel] = None):
+        super().__init__(cfg, prompt, config, source, schema)
 
         self.input_key = "url" if source.startswith("http") else "local_dir"
 
@@ -61,6 +61,7 @@ class SmartScraperGraph(AbstractGraph):
             BaseGraph: A graph instance representing the web scraping workflow.
         """
         fetch_node = FetchNode(
+            self.cfg,
             input="url| local_dir",
             output=["doc", "link_urls", "img_urls"],
             node_config={

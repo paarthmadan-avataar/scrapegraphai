@@ -4,7 +4,7 @@ from langchain_community.callbacks import get_openai_callback
 from typing import Tuple
 
 # Import telemetry functions
-from ..telemetry import log_graph_execution, log_event
+# from ..telemetry import log_graph_execution, log_event
 
 class BaseGraph:
     """
@@ -166,18 +166,18 @@ class BaseGraph:
                     error_node = current_node.node_name
                     
                     graph_execution_time = time.time() - start_time
-                    log_graph_execution(
-                        graph_name=self.graph_name,
-                        source=source,
-                        prompt=prompt,
-                        schema=schema,
-                        llm_model=llm_model,
-                        embedder_model=embedder_model,
-                        source_type=source_type,
-                        execution_time=graph_execution_time,
-                        error_node=error_node,
-                        exception=str(e)
-                    )
+                    # log_graph_execution(
+                    #     graph_name=self.graph_name,
+                    #     source=source,
+                    #     prompt=prompt,
+                    #     schema=schema,
+                    #     llm_model=llm_model,
+                    #     embedder_model=embedder_model,
+                    #     source_type=source_type,
+                    #     execution_time=graph_execution_time,
+                    #     error_node=error_node,
+                    #     exception=str(e)
+                    # )
                     raise e
                 node_exec_time = time.time() - curr_time
                 total_exec_time += node_exec_time
@@ -220,18 +220,18 @@ class BaseGraph:
         # Log the graph execution telemetry
         graph_execution_time = time.time() - start_time
         response = state.get("answer", None) if source_type == "url" else None
-        log_graph_execution(
-            graph_name=self.graph_name,
-            source=source,
-            prompt=prompt,
-            schema=schema,
-            llm_model=llm_model,
-            embedder_model=embedder_model,
-            source_type=source_type,
-            response=response,
-            execution_time=graph_execution_time,
-            total_tokens=cb_total["total_tokens"] if cb_total["total_tokens"] > 0 else None,
-        )
+        # log_graph_execution(
+        #     graph_name=self.graph_name,
+        #     source=source,
+        #     prompt=prompt,
+        #     schema=schema,
+        #     llm_model=llm_model,
+        #     embedder_model=embedder_model,
+        #     source_type=source_type,
+        #     response=response,
+        #     execution_time=graph_execution_time,
+        #     total_tokens=cb_total["total_tokens"] if cb_total["total_tokens"] > 0 else None,
+        # )
 
         return state, exec_info
 

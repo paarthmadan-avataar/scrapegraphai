@@ -16,7 +16,7 @@ from ..utils.logging import get_logger
 from .base_node import BaseNode
 from ..models import OpenAI
 
-import pickle
+import os, pickle
 
 class FetchNode(BaseNode):
     """
@@ -40,13 +40,14 @@ class FetchNode(BaseNode):
 
     def __init__(
         self,
+        cfg,
         input: str,
         output: List[str],
         node_config: Optional[dict] = None,
         node_name: str = "Fetch",
     ):
         super().__init__(node_name, "node", input, output, 1, node_config)
-
+        self.cfg = cfg
         self.headless = (
             True if node_config is None else node_config.get("headless", True)
         )
@@ -175,8 +176,11 @@ class FetchNode(BaseNode):
 
         elif self.use_soup:
             self.logger.info(f"--- (Fetching HTML from: {source}) ---")
-            
-            with open('scraping/data/dom/response.pkl', 'rb') as f:
+            response_path = os.path.join(self.cfg.FETCHED_DOM_PATH, "response.pkl")
+            print("############")
+            print(response_path)
+            print("############")
+            with open(response_path, 'rb') as f:
                 response = pickle.load(f)
             # response = requests.get(source)
             if response.status_code == 200:
@@ -225,3 +229,4 @@ class FetchNode(BaseNode):
         )
 
         return state
+
